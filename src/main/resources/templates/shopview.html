@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title th:text="${shop.shopName}"></title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
+
+    <script type="text/javascript"
+            src="https://webapi.amap.com/maps?v=1.4.15&key=e9257ffbfd99d8e066127354ee12bd9e&plugin=AMap.ToolBar&plugin=AMap.Walking"></script>
+    <script src="https://a.amap.com/jsapi_demos/static/demo-center/js/demoutils.js"></script>
+    <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+
+
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+</head>
+<style>
+
+    .left {
+        width: 25%;
+        height: 100%;
+        background: #eee;
+    }
+
+    .right {
+        background: #f4f4f4;
+        width: 75%;
+        height: 100%;
+    }
+
+    .item {
+        /*商品*/
+        overflow: hidden;
+        width: 100%;
+        padding: 4px;
+        background: #ffffff;
+        border-radius: 10px;
+        margin-bottom: 2px;
+        margin-left: 4px;
+
+    }
+
+    .item-left {
+        float: left;
+    }
+
+    .item-right {
+        float: left;
+        padding: 0 10px;
+    }
+
+    .item-img {
+        margin-left: 3px;
+        width: 100px;
+        height: 100px;
+
+    }
+
+    .title {
+        width: 100px;
+        height: 25px;
+
+        margin-top: 10px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis
+    }
+
+         
+</style>
+
+<body data-spy="scroll" data-target="#d" data-offset="180" style="height: 100%;width: 100%">
+
+<!--顶部固定栏-->
+<div class=" navbar-fixed-top" id="ontop"
+     style=" position:fixed; height: 22% ;width:100%;background-image: linear-gradient(120deg,#3498db,#8e44ad);">
+    <div style="height: 90%;width: 100%" id="标头">
+        <div class="container" style="height: 100%;">
+            <div class="row" style="height: 100%;">
+                <div class="col-12" style="height: 10%;"></div>
+
+                <div class="col-3" style="height: 100%;">
+                    <img id="头像" class="rounded" th:src="'/image/' + ${shop.pictureOne}" style="height: 80%;"/>
+                </div>
+                <div class="col-7" style="height: 100%;margin-top: 0">
+                    <div class="col-12" style="height: 12%;"></div>
+                    <h4 class=" font-weight-bold col-12 text-center"
+                        style=" overflow: hidden;white-space: nowrap; text-overflow: ellipsis ;width: 80% ;height: 35%;"
+                        th:text="${shop.shopName}"></h4>
+                    <div class="col-12 text-left" style="height: 53%;margin-top: 0px;padding-top: 0;margin-left: 20px">
+                        营业时间 :<h6  style="padding-top: 0;margin-top: 0" th:text="${shop_status.opentime}+'--'+${shop_status.downtime}"></h6>
+                    </div>
+                </div>
+                <div class="col-2" style="height: 100%;">
+                    <button type="button" style="height: 30%;" class="close" aria-label="Close">
+                        <img style="height: 36px;width: 36px" src="/image/imge/关闭.png" onclick="javascript:history.back(-1);">
+                    </button>
+                    <div style="height: 50%"></div>
+                    <a style="height: 20%;" data-toggle="modal" data-target="#ditu">
+                        <img style="height: 36px;width: 36px" src="/image/imge/位置.png">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="nav nav-pills nav-fill navbar-fixed-top" style="background-color: white">
+        <li class="nav-item">
+            <a id="nav1" class="nav-link btn btn-light  active">商品</a>
+        </li>
+        <li class="nav-item">
+            <a id="nav2" class="nav-link btn btn-light">店铺</a>
+        </li>
+    </nav>
+</div>
+
+
+<!--商品列表界面-->
+<div id="texte" style="width: 100%"></div>
+<div class="container-fluid " id="商品">
+    <div class="row">
+        <!-- 创建垂直导航栏 -->
+        <nav class="left" id="d" style="position:fixed;background-color:white;">
+            <div class="nav nav-pills flex-column">
+                <div class="nav-item " th:each=" lei:${shoplei}">
+                    <a class="nav-link btn " th:id="${'a'+lei}" th:href="${'#b'+lei}"style="padding: 0"
+                       th:onclick="settop([[${'a'+lei}]],[[${lei}]]);"><h6 th:text="${lei}" style="padding: 0"></h6></a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 每个链接绑定的内容 根据href 与id -->
+        <div id="ty" class="left"></div>
+        <div class="right" id="right">
+            <ul th:each=" lei:${shoplei}">
+                <h1 th:id="${'b'+lei}"></h1>
+                <div th:id="${lei}"><h5 class="text-dark " th:text="${lei}"></h5>
+                    <div th:each="splist:${list}">
+                        <div class="item" th:if="${leiStat.index}==${splistStat.index}" th:each="sp:${splist}">
+                            <a th:href="@{'/spxq/'+${sp.id}}">
+                                <div class="item-left">
+                                    <img class="item-img rounded" th:src="'/image/' + ${sp.picture_sp1}">
+                                </div>
+                                <div class="item-right">
+                                    <h6 class="title font-weight-bold" th:text="${sp.spName}"></h6>
+                                    <p style=" overflow: hidden;white-space: nowrap; text-overflow: ellipsis ;width: 100px ;font-size:70%;"
+                                       th:text="${sp.miaosu}"></p>
+                                    <h5 style="color: red; margin: 0;padding: 0" th:text="${'￥'+sp.danjia}"></h5>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!--  店铺界面          -->
+<div class="container">
+    <div class="row">
+        <div id="店铺" class="tab-pane  clearfix" style="display:none">
+            <h1 style="height: 1px"></h1>
+            <table class="table con table-hover ">
+                <thead>
+                <tr>
+                    <th scope="col" data-toggle="modal" data-target="#renzheng"><h6><img src="/image/imge/认证 .png"
+                                                                                         width="20px" height="20px">&nbsp
+                        &nbsp查看认证资料</h6></th>
+                </tr>
+                <tr>
+                    <th scope="col"><h6 class="col-xs-3"><img src="/image/imge/公告.png" width="20px" height="20px">&nbsp
+                        &nbsp公告 </h6>
+                        <div class="col-xs-8" th:text="${shop_status.shop_post}"></div>
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col"><h6 class="col-xs-3"><img src="/image/imge/简介.png" width="20px" height="20px">&nbsp
+                        &nbsp店铺简介 </h6>
+                        <div class="col-xs-8" th:text="${shop.introduction}"></div>
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col"><h6 class="col-xs-3">店铺图片</h6>
+                        <div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img class="item-img rounded clearfix" style="height: 200px;width: 100%"
+                                         th:src="'/image/' + ${shop.pictureOne}">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="item-img rounded clearfix" style="height: 200px;width: 100%"
+                                         th:src="'/image/' + ${shop.pictureTwo}">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="item-img rounded clearfix" style="height: 200px;width: 100%"
+                                         th:src="'/image/' + ${shop.pictureThree}">
+                                </div>
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselExampleFade" role="button"
+                               data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselExampleFade" role="button"
+                               data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col" data-toggle="modal" data-target="#activety"><h6><img src="/image/imge/活动.png"
+                                                                                         width="20px" height="20px">&nbsp
+                        &nbsp查看当前店铺活动 </h6></th>
+                </tr>
+                <tr>
+                    <th scope="col"><h6 class="col-xs-3"><img src="/image/imge/电 话.png" width="25px" height="25px">&nbsp
+                        &nbsp联系电话 </h6>
+                        <div class="col-xs-8" th:text="${shop.userPhone}"></div>
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col"><h6 class="col-xs-3"><img src="/image/imge/导航.png" width="25px" height="25px">&nbsp
+                        &nbsp地址 </h6>
+                        <div class="col-xs-8" th:text="${shop.addressName}"></div>
+                    </th>
+                </tr>
+                </thead>
+            </table>
+            <!--  活动弹框          -->
+            <div class="modal fade" id="activety" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h6>当前活动：</h6>
+                        </div>
+                        <div class="modal-body">
+                            <div th:text="'活动内容：'+${activ[0]}"></div>
+                            <div th:text="'开启日期：'+${activ[1]}+${activ[2]}"></div>
+                            <div th:text="'截止日期：'+${activ[3]}+${activ[4]}"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <h6 type="button" class="btn-sm btn-primary" data-dismiss="modal">关闭</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--  认证资料弹窗          -->
+            <div class="modal fade" id="renzheng" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <img class="item-img rounded clearfix" th:src="'/image/' + ${shop.mustPicture}">
+                        </div>
+                        <div class="modal-footer">
+                            <h6 type="button" class="btn-sm btn-primary" data-dismiss="modal">关闭</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="ditu" class="modal fade bs-example-modal-lg " tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">请确认你当前位置，系统将为你导航</h6>
+            </div>
+            <div class="modal-body " id="molbody">
+                <div id="container" class="map" tabindex="0"></div>
+            </div>
+            <div class="container">
+                <input type="hidden" id="jingweidu" maxlength="30">
+                <input type="hidden" id="endaddress" th:value="${shop.addressID}">
+                <h6 id='address'></h6>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="address();" data-dismiss="modal">确认</button>
+            </div>
+            <br/>
+        </div>
+    </div>
+</div>
+<!--<script type="text/javascript" src="js/vip.js"></script>-->
+<script type="text/javascript" src='//webapi.amap.com/maps?v=1.4.15&key=e9257ffbfd99d8e066127354ee12bd9e&plugin=AMap.ToolBar'></script>
+<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+<script type="text/javascript">
+    AMapUI.loadUI(['misc/PositionPicker'], function (PositionPicker) {
+        var map = new AMap.Map('container', {
+            zoom: 16,
+            scrollWheel: false
+        });
+        map.plugin(['AMap.Geolocation', 'AMap.ToolBar'], function () {
+
+            var toolbar = new AMap.ToolBar();
+            map.addControl(toolbar);
+            var geolocation = new AMap.Geolocation({
+                enableHighAccuracy: true, // 是否使用高精度定位，默认:true
+                timeout: 5000, // 超过5秒后停止定位，默认：无穷大
+                maximumAge: 0, // 定位结果缓存0毫秒，默认：0
+                convert: true, // 自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+                showButton: true, // 显示定位按钮，默认：true
+                buttonPosition: 'LB', // 定位按钮停靠位置，默认：'LB'，左下角
+                buttonOffset: new AMap.Pixel(10, 20), // 定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+                showMarker: true, // 定位成功后在定位到的位置显示点标记，默认：true
+                showCircle: true, // 定位成功后用圆圈表示定位精度范围，默认：true
+                panToLocation: true, // 定位成功后将定位到的位置作为地图中心点，默认：true
+                zoomToAccuracy: true // 定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+            });
+            map.addControl(geolocation);
+            geolocation.getCurrentPosition();
+
+        });
+        var positionPicker = new PositionPicker({
+            mode: 'dragMap',
+            map: map
+        });
+        positionPicker.on('success', function (positionResult) {
+            document.getElementById("jingweidu").value = positionResult.position; ///动态经纬
+            document.getElementById('address').innerHTML = positionResult.address;
+            //          document.getElementById('nearestJunction').innerHTML = positionResult.nearestJunction;
+            //          document.getElementById('nearestRoad').innerHTML = positionResult.nearestRoad;
+            //          document.getElementById('nearestPOI').innerHTML = positionResult.nearestPOI;
+        });
+
+        positionPicker.on('fail', function (positionResult) {
+            console.log(positionResult);
+        });
+        positionPicker.start();
+        map.panBy(0, 1);
+
+        map.addControl(new AMap.ToolBar({
+            liteStyle: true
+        }))
+    });
+</script>
+
+<script>
+
+    function settop(aid, id) {
+
+        $('h1').each(function () {
+            $(this).height(1);
+        });
+
+        $("#b" + id).height($("#ontop").height() + 2 + $("#nav1").height());//直接设置元素的高
+
+    }
+
+    var div = document.querySelector("#right");
+    div.onclick = function () {
+        $('h1').each(function () {
+            $(this).height(1);
+        });
+    }
+    div.ontouchstart = function () {
+        $('h1').each(function () {
+            $(this).height(1);
+        });
+
+    }
+
+
+    $("#nav2").click(function () {
+
+        document.getElementById("商品").style.display = "none";//隐藏
+        document.getElementById("店铺").style.display = "";//显示
+        // document.getElementById("nav2").style['border-bottom'] = '1px solid ';
+        // document.getElementById("nav1").style['border-bottom'] = '';
+        document.getElementById("nav1").classList.remove("active");
+        document.getElementById("nav2").classList.add("active");
+        $('h1').each(function () {
+            $(this).height(1);
+        });
+    })
+
+
+    $("#nav1").click(function () {
+
+        document.getElementById("商品").style.display = "";//隐藏
+        document.getElementById("店铺").style.display = "none";//显示
+        // document.getElementById("nav2").style['border-bottom'] = '';
+        // document.getElementById("nav1").style['border-bottom'] = '1px solid ';
+        document.getElementById("nav2").classList.remove("active");
+        document.getElementById("nav1").classList.add("active");
+        $('h1').each(function () {
+            $(this).height(1);
+        });
+    })
+
+
+    $("#头像").width($("#头像").height());
+    $("#texte").height($("#ontop").height() + 2 + $("#nav1").height())
+    $("#d").css({
+        'top': $("#ontop").height() + 8 + $("#nav1").height()
+    })
+
+</script>
+
+
+<script type="text/javascript">
+    var y1 = window.screen.width;
+    var a = "px";
+    var y2 = y1 * 8 / 10;
+    document.getElementById("container").style.height = y2 + a;
+    address = function () {
+        var star = document.getElementById("jingweidu").value;
+        var end = document.getElementById("endaddress").value;
+        var thehref = 'https://m.amap.com/navi/?start=' + star + '&dest=' + end + '&destName=  &naviBy=car&key=e9257ffbfd99d8e066127354ee12bd9e';
+        window.open(thehref)
+    }
+</script>
+</body>
+</html>

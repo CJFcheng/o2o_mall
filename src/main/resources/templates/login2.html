@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <link href="/css/style.css" rel="stylesheet" type="text/css"/>
+
+
+</head>
+<body>
+
+<section class="aui-flexView">
+    <header class="aui-navBar aui-navBar-fixed">
+        <a href="/login" class="aui-navBar-item">
+            <i class="icon icon-return"></i>
+        </a>
+        <div class="aui-center">
+            <span class="aui-center-title"></span>
+        </div>
+        <!--		<a href="javascript:;" class="aui-navBar-item" >-->
+        <!--			客服-->
+        <!--		</a>-->
+    </header>
+    <section class="aui-scrollView">
+        <div class="aui-ver-head">
+            <img src="/image/images/head.png" alt="">
+        </div>
+        <br><br><br>
+        <div class="aui-ver-form">
+            <div>
+                <a id="pswlogin" style="background-color: #bbbbbb;padding: 12px" onclick="pswlogin();">密码登录</a>
+                <a id="phonelogin" style="background-color: #e8e8e8;padding: 12px" onclick="phonelogin();">手机快速登录</a>
+            </div>
+            <br>
+            <div class="aui-flex">
+                <div class="aui-flex-box">
+                    <i class="icon icon-phone"></i>
+                    <input id="phone" type="text" maxlength="11" autocomplete="off" placeholder="手机号码" name="phone">
+                </div>
+            </div>
+            <p style="color: red;font-size: 5px; text-align: right ;" id="phone2"></p>
+            <div class="aui-flex">
+                <div class="aui-flex-box">
+                    <i class="icon icon-code"></i>
+                    <input id="psw" type="password" maxlength="20" autocomplete="off" placeholder="密码" name="password">
+                </div>
+                <div class="aui-button-code">
+                    <a id="a" href="/repassword">
+                        <input id="btnForget" type="button" class="btn btn-default" value="忘记密码？"
+                               onclick="sendMessage1()"/></a>
+                </div>
+            </div>
+            <p style="color: red;font-size: 5px; text-align: right ;" id="code2"></p>
+            <div class="aui-link-hadAccout">
+                <a href="/join">没有账号？立即注册</a>
+            </div>
+            <div class="aui-ver-button">
+                <button onclick="rzlogin();">立即登录</button>
+                <br>
+                <p style="color: red">主要适应手机端,短信服务功能可能过期，请使用测试账号</p><br>
+                <p style="color: red">测试账号：13539271996</p><br>
+                <p style="color: red">密码：asd23</p>
+            </div>
+
+
+        </div>
+
+    </section>
+</section>
+
+</body>
+<script src="/bootst/js/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    var phoneReg = /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/;
+    var count = 30;
+    var InterValObj1;
+    var curCount1 = 0;
+
+    function sendMessage1() {
+        if ($("#btnForget").val() == "获取短信验证码" || $("#btnForget").val() == "重新发送") {
+
+            phone1 = $.trim($('#phone').val());
+            if (!phoneReg.test(phone1)) {
+                $("#phone2").html("请输入有效的手机号码")
+                return false;
+            } else {
+
+                curCount1 = count;
+
+                InterValObj1 = window.setInterval(SetRemainTime1, 1000);
+                $.ajax({
+                    type: "POST",
+                    url: "/loginsencode",
+                    data: {
+                        "phone": phone1,
+                        "type1": "login",
+                    },
+
+                    error: function () {
+                        alert("error");
+                    },
+                    success: function (date) {
+                        if (date == "senok") {
+                            $("p").html("");
+                            $("#btnForget").attr("disabled", "true");
+                            $("#btnForget").val(+curCount1 + "秒再获取");
+                        } else if (date == "namexx")
+                            $("#phone2").html("当前手机号码未注册");
+
+                    }
+                });
+            }
+
+        }
+    }
+
+
+    function SetRemainTime1() {
+        if (curCount1 == 0) {
+            window.clearInterval(InterValObj1);
+            $("#btnForget").removeAttr("disabled");
+            $("#btnForget").load(location.href + " #btnForget");
+            $("#btnForget").val("重新发送");
+        } else {
+            curCount1--;
+            $("#btnForget").val(+curCount1 + "秒再获取");
+        }
+    }
+
+
+    function pswlogin() {
+        $("#pswlogin").css("background-color", "#bbbbbb")
+        $("#phonelogin").css("background-color", "#e8e8e8")
+        $("#psw").attr("type", "password");
+        $("#psw").val("");
+        $("#btnForget").val("忘记密码？");
+        $("#a").attr('href', '/repassword')
+        $("p").html("");
+
+        $("#psw").attr("placeholder", "密码");
+    }
+
+    function phonelogin() {
+        $("#pswlogin").css("background-color", "#e8e8e8")
+        $("#phonelogin").css("background-color", "#bbbbbb")
+        $("#psw").attr("type", "text");
+        $("#psw").val("");
+        $("#btnForget").val("获取短信验证码");
+        $("#a").attr('href', '#')
+        $("p").html("");
+        $("#psw").attr("placeholder", "验证码");
+    }
+
+    var psw = '';
+    var the_or = "mm";
+    var phone1 = ''
+
+    function rzlogin() {
+        $("p").html("");
+        phone1 = $.trim($('#phone').val());
+        if (!phoneReg.test(phone1)) {
+            $("#phone2").html("请输入有效的手机号码")
+            return false;
+        }
+        if ($("#btnForget").val() == "忘记密码？") {//密码登录
+            if ($("#psw").val() == '') {
+                $("#code2").html("密码不能为空");
+                return false;
+            } else
+                psw = $("#psw").val();
+
+        } else {//验证码登录
+            if ($("#psw").val() == '') {
+                $("#code2").html("请输入验证码");
+                return false;
+            } else {
+                psw = $("#psw").val();
+                the_or = "yzm";
+            }
+        }
+
+        if (psw != '') {
+
+            $.ajax({
+                type: "POST",
+                url: "/rzlogin",
+                data: {
+                    "psw": psw,
+                    "phone": phone1,
+                    "the_or": the_or
+                },
+
+                error: function () {
+                    alert("error");
+                },
+                success: function (date) {
+
+                    if (date == "okway") {
+
+                        window.location.href = "/index";
+                    } else if (date == "xxx") {
+                        if (the_or == "mm")
+                            $("#code2").html("密码错误");
+                        else
+                            $("#code2").html("验证码错误");
+                    } else
+                        alert("发生未知错误")
+                }
+            });
+
+
+        }
+
+
+        $("input").click(function () {
+            $("p").html("");
+        })
+
+
+    }
+
+
+</script>
+
+</html>

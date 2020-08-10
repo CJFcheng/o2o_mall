@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>商品列表</title>
+    <link rel="stylesheet" type="text/css" href="/bootst/css/bootstrap.min.css"/>
+    <link href="/css/indexstyle.css" rel="stylesheet" type="text/css" />
+
+
+    <script src="/bootst/js/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/bootst/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+    <style type="text/css">
+
+    </style>
+</head>
+<body >
+
+<div class="container">
+    <div class="row">
+        <nav class="nav navbar navbar-fixed-top navbar-default  "style=" border-bottom:2px solid #aa131c; " >
+            <div class="col-xs-1" style="margin-top: 14px">
+                <a href="/index"><h4 class="text-left"><span class="glyphicon glyphicon-menu-left "></span></h4></a>
+            </div>
+            <div class="col-xs-9">
+                <div class="jq22-search-box" style="margin: 8px">
+                    <input type="text" placeholder="搜索一万件好东西"id="findvue">
+                </div>
+            </div>
+            <div class="col-xs-2" style="padding-top: 15px;padding-right: 25px;padding-left: 5px;" id="find_of">
+                <svg t="1576246509933" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1912" ><path d="M222.6944 222.7968A323.1488 323.1488 0 0 0 133.6832 512c19.2512-87.3728 64.512-172.7488 135.0144-243.3024C339.2512 198.1184 424.6272 152.8832 512 133.632c-101.632-19.1488-210.688 10.5216-289.3056 89.1648z" fill="#aa131c" p-id="1913"></path><path d="M989.44 822.1184l-121.7024-121.7024a118.016 118.016 0 0 0-92.8-34.1248c114.4576-165.5552 97.92-394.3936-49.4848-541.824-165.9392-165.9904-435.0464-165.9904-601.0368 0-165.9392 165.9904-165.9392 435.1232 0 601.1136 147.4048 147.4304 376.064 163.84 541.7216 49.3824-2.56 33.28 8.8576 67.5328 34.1248 92.8l121.7024 121.728c46.08 45.9776 121.3696 45.9776 167.3472 0 46.208-45.9776 46.208-121.2928 0.128-167.3728zM676.096 676.096c-138.6752 138.6752-363.392 138.6752-502.016 0-138.6752-138.6752-138.6752-363.4432 0-502.1184 138.624-138.6752 363.3408-138.6752 502.016 0 138.6496 138.5728 138.6496 363.4432 0 502.1184z" fill="#aa131c" p-id="1914"></path></svg>
+
+            </div>
+
+        </nav>
+    </div>
+
+</div>
+
+<br/><br/><br/>
+
+
+<div class="container ">
+<div class=" container  row"  th:each="sp:${list}" >
+    <a class="btn btn-default col-xs-12" style="background-color: #e4e3ef; margin-top: 15px"th:href="@{'/spxq/'+${sp.id}}" >
+        <div class="col-xs-12 img-rounded" style="background-color: #e4e3ef; padding: 0;margin: 0">
+            <div class="col-xs-4" style="margin-left: 0;padding-left: 0">
+                <img src="/imge/下载.jpg" class="img-rounded" style="height: 100px;width: 100px;" th:src="'/image/' + ${sp.picture_sp1}">
+            </div>
+            <div class="col-xs-8" style=";text-align: left;padding-top: 15px">
+                <h4 style="margin-bottom: 10px;padding-bottom: 0;overflow: hidden;white-space: nowrap; text-overflow: ellipsis ;width: 110% ;"><strong th:text="${sp.spName}">猪杂汤粉+鸡蛋</strong></h4>
+                <p style=" overflow: hidden;white-space: nowrap; text-overflow: ellipsis ;width: 100% ;font-size:110%;"><strong th:text="${sp.miaosu}">杂汤粉鸡蛋</strong></p>
+                <div class="col-xs-12" style="text-align: right;margin-top: 10px"><h5 style="color: red" >￥<strong style="color: red" th:text="${sp.danjia}">234</strong></h5></div>
+            </div>
+        </div>
+    </a>
+
+</div>
+
+</div>
+<br/>
+<br/>
+
+</body>
+<script>
+    $("#find_of").click(function () {
+
+        if ($("#findvue").val()=="")
+            $("#findvue").val("_")
+
+        window.location = "/find/"+$("#findvue").val();
+
+    })
+</script>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>添加商品</title>
+    <link rel="stylesheet" type="text/css" href="/bootst/css/bootstrap.min.css"/>
+
+    <script src="/bootst/js/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/bootst/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+
+<body>
+
+
+<div class="container">
+    <!--上导航栏-->
+    <nav class="nav navbar navbar-fixed-top navbar-default">
+
+        <div class="col-xs-1">
+            <a href="/shopcenter"><h3 class="text-left"><span class="glyphicon glyphicon-menu-left "></span></h3></a>
+        </div>
+
+        <div class="col-xs-10">
+            <h3 class="text-center"><strong>添加商品</strong></h3>
+        </div>
+        <div class="col-xs-1">
+
+        </div>
+
+    </nav>
+    <!--空盒子，避免内容被导航栏遮到-->
+    <div style="height: 60px;"></div>
+    <form action="/addCommodity" method="post" enctype="multipart/form-data" id="form_1" onsubmit="return  cheak();">
+        <div class="form-group" style="margin-bottom: 0;padding-bottom: 0">
+            <label for="spName"><h4 style="margin-bottom: 0;padding-bottom: 0"><strong>商品名称</strong></h4></label>
+            <input type="text" class="form-control" id="spName" name="spName" maxlength="15"
+                   placeholder="请输入商品展示标题,最多15个字">
+        </div>
+        <div class="form-group" style="margin-bottom: 0;padding-bottom: 0">
+            <label for="miaosu"><h4 style="margin-bottom: 0;padding-bottom: 0"><strong>商品描述</strong></h4></label>
+            <textarea class="form-control" rows="3" id="miaosu" name="miaosu" maxlength="30"
+                      placeholder="最多输入30个字"></textarea>
+        </div>
+        <h4><strong>商品图片</strong></h4>
+        <div class="row">
+            <div class="col-xs-4">
+                <label for="file"><img id="img1" src="imge/待上传.png" width="100px" height="100px"/>
+                    <h6 class="btn">添加商品主图</h6></label>
+                <input type="file" id="file" name="picture_sp" class="hidden"
+                       accept="image/png, image/jpeg, image/gif, image/jpg" onchange="imgshow(this,1); "/>
+            </div>
+            <div class="col-xs-4">
+                <label for="picture_sp2"><img id="img2" src="imge/待上传.png" width="100px" height="100px"/>
+                    <h5 class="btn">添加商品主图</h5></label>
+                <input type="file" id="picture_sp2" name="picture_sp" class="hidden"
+                       accept="image/png, image/jpeg, image/gif, image/jpg" onchange="imgshow(this,2); "/>
+            </div>
+            <div class="col-xs-4">
+                <label for="picture_sp3"><img id="img3" src="imge/待上传.png" width="100px" height="100px"/>
+                    <h5 class="btn">添加商品主图</h5></label>
+                <input type="file" id="picture_sp3" name="picture_sp" class="hidden"
+                       accept="image/png, image/jpeg, image/gif, image/jpg" onchange="imgshow(this,3); "/>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;padding-bottom: 0">
+            <label for="shopdlei"><h4 style="margin-bottom: 0;padding-bottom: 0"><strong>店内分类</strong></h4></label>
+            <select class="form-control" id="shopdlei" name="shoplei">
+                <option th:each="shoplei:${lei}" th:text="${shoplei}"></option>
+
+            </select>
+        </div>
+        <div class="form-group " style="margin-bottom: 0;padding-bottom: 0">
+            <label for="danjia"><h4 style="margin-bottom: 0;padding-bottom: 0"><strong>单价</strong></h4></label>
+            <input type="text" class="form-control" id="danjia" name="danjia" maxlength="10" placeholder="配合下面单位填写价格">
+        </div>
+        <div class="form-group" style="margin-bottom: 0;padding-bottom: 0">
+            <label for="danwei"><h4 style="margin-bottom: 0;padding-bottom: 0"><strong>商品单位</strong></h4></label>
+            <input type="text" class="form-control" id="danwei" name="danwei" maxlength="10" placeholder="一斤或一件或五件">
+        </div>
+        <div class="form-group" style="margin-bottom: 0;padding-bottom: 0">
+            <label for="kucun"><h4 style="margin-bottom: 0;padding-bottom: 0"><strong>库存</strong></h4></label>
+            <input type="text" class="form-control" id="kucun" name="kucun" maxlength="10" placeholder="配合上面单位进行填写">
+        </div>
+        <div class="form-group" style="margin-bottom: 0;padding-bottom: 0">
+            <label for="biaoqian"><h4 style="margin-bottom: 0;padding-bottom: 0"><strong>商品标签</strong></h4></label>
+            <select class="form-control" id="biaoqian" name="biaoqian">
+                <option>生活服务</option>
+                <option>日常用品</option>
+                <option>二手买卖</option>
+                <option>电子设备</option>
+                <option>服装首饰</option>
+                <option>工 具</option>
+                <option>生 鲜</option>
+                <option>学习用品</option>
+            </select>
+        </div>
+        <div class="radio">
+            <h4 ><strong>直接上架</strong>&nbsp;&nbsp;&nbsp;
+                <label>
+                    <input type="radio" name="op" id="op1" value="是">
+                    是
+                </label>
+
+                <label>
+                    <input type="radio" name="op" id="op2" value="否">
+                    否
+                </label>
+            </h4>
+        </div>
+        <button type="submit" id="take_1" class="btn btn-success col-xs-12" value="提交">提交</button>
+
+        <br/><br/><br/>
+    </form>
+</div>
+
+
+<script type="text/javascript" src="js/picture.js"></script>
+<script type="text/javascript" th:inline="javascript">
+
+    $('#op1').attr('checked', 'true');
+    if ([[${cmdt}]]) {
+        var sp = [[${cmdt}]];
+        $('#spName').val(sp.spName);
+        $("#miaosu").val(sp.miaosu);
+        $("#danjia").val(sp.danjia);
+        $("#danwei").val(sp.danwei);
+        $("#kucun").val(sp.kucun);
+        $("#biaoqian").val(sp.biaoqian);
+        $("#shopdlei").val(sp.shoplei);
+        $("#img1")[0].src = '/image/' + sp.picture_sp1;
+        $("#img2")[0].src = '/image/' + sp.picture_sp2;
+        $("#img3")[0].src = '/image/' + sp.picture_sp3;
+        var ac = '/upCommodity/' + sp.id;
+        if (sp.op == "是")
+            $('#op1').attr('checked', 'true');
+        else if (sp.op == "否")
+            $('#op2').attr('checked', 'true');
+        $("#take_1").html("确认更改");
+        $('form[id=form_1]').attr('action', ac);
+
+    }
+
+
+    function cheak() {
+
+        if ( $('#spName').val()=="")
+            alert("请输入商品名称")
+        else if ( $('#miaosu').val()=="")
+               alert("请对商品进行描述")
+        else if ( $('#danjia').val()=="")
+            alert("请填写价格")
+        else if ( $('#danwei').val()=="")
+            alert("请填写单位")
+        else if ( $('#kucun').val()=="")
+            alert("请填写库存")
+
+        else return true;
+
+        return false;
+    }
+
+
+
+
+</script>
+
+</body>
+<!--<script type="text/javascript" src="js/p1.js"></script>-->
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>商家认证中心</title>
+    <link rel="stylesheet" type="text/css" href="/bootst/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/bootst/css/bootstrap-switch.min.css"/>
+    <script src="/bootst/js/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/bootst/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/bootst/js/bootstrap-switch.min.js"></script>
+
+
+</head>
+<body>
+<div class="container">
+    <!--上导航栏-->
+    <nav class="nav navbar navbar-fixed-top navbar-default" style="border-bottom:2px solid #aa131c;">
+        <div class="col-xs-1">
+            <a  href="javascript:history.go(-1);" >
+                <h3 class="text-left"><span class="glyphicon glyphicon-menu-left "></span></h3></a>
+        </div>
+        <div class="col-xs-10">
+            <h3 class="text-center"><strong>认证中心</strong></h3>
+        </div>
+        <div class="col-xs-1">
+        </div>
+    </nav>
+    <!--空盒子，避免内容被导航栏遮到-->
+    <div style="height: 60px;"></div>
+
+
+    <form action="/takevip" id="form_1" method="post" enctype="multipart/form-data" onsubmit="return rzzx();">
+        <div class="form-group" style="margin-bottom: 0;padding-bottom: 0">
+            <label for="sdname"><h4 style="margin-bottom: 0;padding-bottom: 0">商店名称</h4></label>
+            <input type="text" class="form-control" id="sdname" name="shopName" maxlength="15"
+                   placeholder="请输入店名,最多15个字">
+        </div>
+        <div class="form-group" style="margin-bottom: 0;padding-bottom: 0">
+            <label for="jianjie"><h4 style="margin-bottom: 0;padding-bottom: 0">商店简介</h4></label>
+
+            <textarea class="form-control" rows="3" id="jianjie" name="Introduction" maxlength="30"
+                      placeholder="最多输入30个字"></textarea>
+        </div>
+
+        <h4 style="margin-bottom: 0;padding-bottom: 0">店面图片</h4>
+        <div class="row">
+            <div class="col-xs-4">
+                <label for="picture1"><img id="img1" src="imge/店面.png" width="100px" height="100px"/>
+                    <h6 class="btn">添加店面主图</h6></label>
+                <input type="file" name="pic" id="picture1" class="hidden" accept="image/png, image/jpeg,  image/jpg"
+                       onchange="imgshow(this,1); "/>
+            </div>
+
+            <div class="col-xs-4">
+                <label for="picture2"><img id="img2" src="imge/待上传.png" width="100px" height="100px"/>
+                    <h6 class="btn">添加店内图片</h6></label>
+                <input type="file" name="pic" id="picture2" class="hidden" accept="image/png, image/jpeg,  image/jpg"
+                       onchange="imgshow(this,2); "/>
+            </div>
+
+            <div class="col-xs-4">
+                <label for="picture3"><img id="img3" src="imge/待上传.png" width="100px" height="100px"/>
+                    <h6 class="btn">添加店内图片</h6></label>
+                <input type="file" name="pic" id="picture3" class="hidden"
+                       accept="image/png, image/jpeg, image/gif, image/jpg" onchange="imgshow(this,3); "/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="uname"><h4 style="margin-bottom: 0;padding-bottom: 0">经营者姓名</h4></label>
+            <input type="text" class="form-control" id="uname" name="userName" placeholder="经营者姓名 " maxlength="10">
+        </div>
+        <h4>身份认证</h4>
+        <div class="row">
+            <div class="col-xs-6">
+                <label for="picture4"><img id="img4" src="imge/身份证-正面.png" width="150px" height="110px"/>
+                </label>
+                <input type="file" name="pic" id="picture4" class="hidden"
+                       accept="image/png, image/jpeg, image/gif, image/jpg" onchange="imgshow(this,4); "/>
+            </div>
+            <div class="col-xs-6">
+                <label for="picture5"><img id="img5" src="imge/身份证-反面.png" width="150px" height="110px"/>
+                </label>
+                <input type="file" name="pic" id="picture5" class="hidden"
+                       accept="image/png, image/jpeg, image/gif, image/jpg" onchange="imgshow(this,5); "/>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label for="phone"><h4 style="margin-bottom: 0;padding-bottom: 0">联系电话</h4></label>
+            <input type="text" class="form-control" id="phone" name="userPhone" placeholder="经营者联系电话" maxlength="11">
+        </div>
+        <h4 style="margin-bottom: 0;padding-bottom: 0">合法经营认证</h4>
+        <div >
+            <label for="picture6"><img id="img6" src="imge/营业执照.png" width="110px" height="80px"/>
+                <h4 style="margin-bottom: 0;padding-bottom: 0">添加营业执照</h4></label>
+            <input type="file" name="pic" id="picture6" class="hidden" accept="image/png, image/jpeg, image/jpg"
+                   onchange="imgshow(this,6); "/>
+        </div>
+
+        <div class="form-group">
+            <h5 data-toggle="modal" data-target="#ditu">点击此处获取位置<img src="/imge/定位.png " width="30" height="30"></h5>
+            <h6 id="tishi" style="color:red;"></h6>
+            <input type="hidden" class="form-control " id="jingweidu" name="addressID" maxlength="30">
+            <input type="text" class="form-control" id="dizhi" name="addressName" placeholder="填写详细地址" maxlength="50">
+        </div>
+        <input type="submit" id="okway" value="提交审核" class="btn btn-success col-xs-12"/>
+
+        <br/><br/><br/>
+    </form>
+
+</div>
+
+<div id="ditu" class="modal fade bs-example-modal-lg " tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">选择当前位置</h4>
+            </div>
+            <div class="modal-body " id="molbody">
+                <div id="container" class="map" tabindex="0"></div>
+            </div>
+            <div class="container">经纬度:
+                <h5 id='lnglat'></h5>
+                <h4 id='address'></h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="address();" data-dismiss="modal">确认位置</button>
+            </div>
+            <br/>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="js/vip.js"></script>
+<script type="text/javascript"
+        src='//webapi.amap.com/maps?v=1.4.15&key=e9257ffbfd99d8e066127354ee12bd9e&plugin=AMap.ToolBar'></script>
+<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+<script type="text/javascript">
+    AMapUI.loadUI(['misc/PositionPicker'], function (PositionPicker) {
+        var map = new AMap.Map('container', {
+            zoom: 16,
+            scrollWheel: false
+        });
+        map.plugin(['AMap.Geolocation', 'AMap.ToolBar'], function () {
+
+            var toolbar = new AMap.ToolBar();
+            map.addControl(toolbar);
+            var geolocation = new AMap.Geolocation({
+                enableHighAccuracy: true, // 是否使用高精度定位，默认:true
+                timeout: 5000, // 超过5秒后停止定位，默认：无穷大
+                maximumAge: 0, // 定位结果缓存0毫秒，默认：0
+                convert: true, // 自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+                showButton: true, // 显示定位按钮，默认：true
+                buttonPosition: 'LB', // 定位按钮停靠位置，默认：'LB'，左下角
+                buttonOffset: new AMap.Pixel(10, 20), // 定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+                showMarker: true, // 定位成功后在定位到的位置显示点标记，默认：true
+                showCircle: true, // 定位成功后用圆圈表示定位精度范围，默认：true
+                panToLocation: true, // 定位成功后将定位到的位置作为地图中心点，默认：true
+                zoomToAccuracy: true // 定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+            });
+            map.addControl(geolocation);
+            geolocation.getCurrentPosition();
+
+        });
+        var positionPicker = new PositionPicker({
+            mode: 'dragMap',
+            map: map
+        });
+        positionPicker.on('success', function (positionResult) {
+            document.getElementById('lnglat').innerHTML = positionResult.position; ///动态经纬
+            document.getElementById('address').innerHTML = positionResult.address;
+            //          document.getElementById('nearestJunction').innerHTML = positionResult.nearestJunction;
+            //          document.getElementById('nearestRoad').innerHTML = positionResult.nearestRoad;
+            //          document.getElementById('nearestPOI').innerHTML = positionResult.nearestPOI;
+        });
+
+        positionPicker.on('fail', function (positionResult) {
+            console.log(positionResult);
+        });
+        positionPicker.start();
+        map.panBy(0, 1);
+
+        map.addControl(new AMap.ToolBar({
+            liteStyle: true
+        }))
+    });
+</script>
+<script type="text/javascript">
+    //地图弹窗
+    var y1 = window.screen.width;
+    var a = "px";
+    var y2 = y1 * 8 / 10;
+    document.getElementById("container").style.height = y2 + a;
+    address = function () {
+        document.getElementById("dizhi").value = document.getElementById("address").innerHTML;
+        document.getElementById("jingweidu").value = document.getElementById("lnglat").innerHTML;
+    }
+    //提交onclie
+    rzzx = function () {
+        if ($("#sdname").val()=="")
+            alert("输入店名")
+        else if($("#jianjie").val()=="")
+            alert("输入店铺介绍")
+        else if($("#uname").val()=="")
+            alert("输入店长姓名")
+        else if($("#phone").val()=="")
+            alert("输入店长联系电话")
+       else if($("#jingweidu").val()=="")
+            alert("请点击图标进行定位")
+       else return true;
+
+        return false;
+    }
+
+</script>
+
+
+<script type="text/javascript" th:inline="javascript">
+
+
+    if ([[${vip}]] != null) {
+        var sp = [[${vip}]];
+
+        $('#sdname').val(sp.shopName);
+        $("#jianjie").html(sp.introduction);
+        $("#uname").val(sp.userName);
+        $("#phone").val(sp.userPhone);
+        $("#jingweidu").val(sp.addressID);
+        $("#tishi").html("如果需修改位置，请点击图标重新定位");
+        $("#dizhi").val(sp.addressName);
+        if (sp.pictureOne != '')
+            $("#img1")[0].src = '/image/' + sp.pictureOne;
+        if (sp.pictureTwo != '')
+            $("#img2")[0].src = '/image/' + sp.pictureTwo;
+        if (sp.pictureThree != '')
+            $("#img3")[0].src = '/image/' + sp.pictureThree;
+        if (sp.idcardOne != '')
+            $("#img4")[0].src = '/image/' + sp.idcardOne;
+        if (sp.idcardTwo != '')
+            $("#img5")[0].src = '/image/' + sp.idcardTwo;
+        if (sp.mustPicture != '')
+            $("#img6")[0].src = '/image/' + sp.mustPicture;
+        $("#okway").val("确认更改");
+        $('form[id=form_1]').attr('action', '/upshopvip')
+
+    }
+
+
+</script>
+
+</body>
+
+</html>

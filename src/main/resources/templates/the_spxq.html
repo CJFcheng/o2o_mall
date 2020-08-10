@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="/bootst/css/bootstrap.min.css"/>
+
+
+    <link rel="stylesheet" type="text/css" href="/swiper/css/swiper.min.css"/>
+    <script type="text/javascript" src="/swiper/js/swiper.min.js"></script>
+
+    <script src="/bootst/js/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/bootst/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+    <title>商品详细</title>
+    <style type="text/css">
+        body {
+            overflow-x: hidden;
+            width: 100%;
+
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style=" border-bottom:2px solid #aa131c; ">
+            <div class="container-fluid">
+                <div class="navbar-header row">
+
+
+                    <a class="navbar-brand col-xs-2" href="javascript:history.go(-1);" style="margin-top: 2px;">
+                        <li class="glyphicon glyphicon-chevron-left"></li>
+                    </a>
+                    <p class="text-center col-xs-8 " style="height:50px; font-size: 20px;padding: 15px 15px;line-height: 20px;">
+                        商品详情</p>
+                    <p class="text-right col-xs-2" style="margin-top: 10px" id="sc" >
+
+                           收藏   </p>
+                </div>
+
+
+
+            </div>
+        </nav>
+    </header>
+
+    <!--图片轮播图-->
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img class="swiper-lazy" width="100%" height="300px"
+                                           th:src="'/image/' + ${commodity.picture_sp1}"/></div>
+            <div class="swiper-slide"><img class="swiper-lazy" width="100%" height="300px"
+                                           th:src="'/image/' + ${commodity.picture_sp2}"></div>
+            <div class="swiper-slide"><img class="swiper-lazy" width="100%" height="300px"
+                                           th:src="'/image/' + ${commodity.picture_sp3}"></div>
+        </div>
+        <div class="swiper-pagination"></div>
+
+    </div>
+
+    <div class="row"><!--标题价格区-->
+        <h4 style="margin-left: 15px;" th:text="${commodity.spName}">Swiper常用于移动端网站的内容触摸滑动</h4>
+        <span style="margin-left: 30px; color: #ff5a1b;font-size:10px;"><strong>￥</strong></span><span
+                style="font-size:21px;color: #ff5a1b;" th:text="${commodity.danjia}">500</span>
+        <span class=" pull-right" style="margin-right: 40px;font-size:15px;" th:text="'库存：'+${commodity.kucun}"></span>
+        <input type="hidden" id="kuncun" th:value="${commodity.kucun}">
+        <input type="hidden" id="danjia" th:value="${commodity.danjia}">
+        <input type="hidden" id="adid" th:value="${addressid}">
+
+        <input type="hidden" id="sc1" value="0" >
+
+
+
+    </div>
+
+
+</div>
+<div style="width: 100%;height: 22px;background-color: #f7f7f7;margin-top: 5px;">
+<!--    <div style="width: 180px;height: 50px;margin: 0 auto;">-->
+<!--        <h4 class="container">商品详情</h4>-->
+<!--    </div>-->
+</div>
+
+
+<div id="xq" style="background-color: #FFFFFF;height: 250px;width: 80%;margin: 0 auto;">
+    <div><br/>
+        <a href="#" class="list-group-item text-center" style="background-color: #F2DEDE;">
+            详情列表
+        </a>
+        <a href="#" class="list-group-item">商品简称: <span th:text="${commodity.spName}">不得超过8个字</span></a>
+        <a href="#" class="list-group-item">商品类别：<span th:text="${commodity.shoplei}">不得超过8个字</span></a>
+        <a href="#" class="list-group-item">商品单价：<span  th:text="${commodity.danjia}">不得超过8个字</span></a>
+        <a href="#" class="list-group-item">商品标签：<span th:text="${commodity.biaoqian}">不得超过8个字</span></a>
+    </div>
+    <div style="margin-top: 5px;margin-bottom: 55px;">
+        <h4 style="margin-bottom: 0"><strong>商品描述：</strong></h4>
+        <p ><strong th:text="${commodity.miaosu}"></strong></p>
+        <img src="img/00.jpg" th:src="'/image/' + ${commodity.picture_sp1}" width="100%"style="margin-bottom: 12px"/>
+        <img src="img/00.jpg" th:src="'/image/' + ${commodity.picture_sp2}" width="100%" style="margin-bottom: 12px"/>
+        <img src="img/00.jpg" th:src="'/image/' + ${commodity.picture_sp3}" width="100%" style="margin-bottom: 12px"/>
+    </div>
+
+</div>
+
+
+
+
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">提交订单</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="col-xs-12" style="background-color: #d1dfe5;padding: 4px;padding-top:8px;border-radius: 10px;">
+                    <div class="col-xs-4">
+                        <img class=" rounded" style="width: 80px; height: 80px;" th:src="'/image/' + ${commodity.picture_sp1}">
+                    </div>
+
+                    <div class="col-xs-5">
+                        <h6 class="" th:text="${commodity.spName}"></h6>
+                    </div>
+                    <div class="col-xs-3">
+                        <h5  style="color: red;" th:text="${'￥'+commodity.danjia}"></h5>
+                        <br>
+                        <h5>x<strong id="num"></strong></h5>
+                    </div>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <td>单价：</td>
+                        <td th:text="${commodity.danjia+'元'}"></td>
+                    </thead>
+                    <tr>
+                        <td ><h5>订单数量</h5></td>
+                        <td>
+                            <div class="input-group"  style="text-align: center;width: 100px; outline: none;">
+                                <span class="input-group-addon" id="basic-addon1" onclick="sub();">-</span>
+                                <input type="number" id="add" class="form-control" value="1" aria-describedby="basic-addon2" style="width: 50px">
+                                <span class="input-group-addon" id="basic-addon2" onclick="add();">+</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td ><h5 >联系人：</h5></td>
+                        <td ><input type="text" id="name" maxlength="8" class="form-control" placeholder="必填"></td>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <td ><h5>联系电话：</h5></td>
+                        <td ><input type="text" id="phone"  maxlength="11" class="form-control" placeholder="必填"></td>
+                    </tr>
+                    <tr>
+                        <td ><h5>地址：</h5></td>
+                        <td ><input type="text" id="addre" maxlength="40" class="form-control" placeholder="必填"></td>
+                    </tr>
+                    <tr>
+                    <td ><h5>备注：</h5></td>
+                    <td ><input type="text" id="texxt" maxlength="40" class="form-control" placeholder="选填"></td>
+                    </tr>
+                    <p id="liang" style="color: red;"></p>
+                </table>
+
+
+            </div>
+            <div class="modal-footer" style="margin: 0;padding-top: 0">
+                <h5 class="navbar-text" >合计： ￥<strong style="color: #ff2700;" id="sum" th:text="${commodity.danjia}"></strong></h5>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" >取消</button>
+                <button type="button" onclick="sendDD();" class="btn btn-primary" >确认订单</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav class="nav navbar navbar-fixed-bottom navbar-default" style=" border-top:2px solid #aa131c; ">
+
+    <a href="#leibie" class="btn  "id="bleig" data-toggle="tab" style="display: none" ></a>
+
+    <!--隐藏分类管理-->
+    <a href="#" th:href="@{'/shopview/'+${commodity.shopName}}"  class="btn col-xs-4 "  >
+        <div class="col-xs-12" style="padding-bottom: 0;margin-bottom: 0;padding-top: 0;margin-top: 0;">
+            <div class="col-xs-1"></div>
+            <h5 class="col-xs-11" style="padding-bottom: 0;margin-bottom: 0;padding-top: 0;margin-top: 0;"><svg t="1576300193578" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1870" ><path d="M512 1024C229.236364 1024 0 794.763636 0 512S229.236364 0 512 0s512 229.236364 512 512-229.236364 512-512 512z m225.954909-480.651636c42.391273 0 77.067636-35.933091 77.067636-79.976728L760.692364 313.483636H252.858182L198.528 463.36c0 44.043636 34.676364 79.976727 77.067636 79.976727 42.379636 0 77.056-35.933091 77.056-79.976727 0 44.043636 34.676364 79.976727 77.067637 79.976727 42.379636 0 77.056-35.933091 77.056-79.976727 0 44.043636 34.676364 79.976727 77.067636 79.976727 42.379636 0 77.056-35.933091 77.056-79.976727 0 44.043636 34.676364 79.976727 77.056 79.976727z m24.820364 220.288v-203.985455c-6.167273 1.175273-12.730182 1.954909-19.293091 1.954909l-9.646546-0.384-8.098909-1.163636-1.931636-0.395637-3.467636-0.791272a101.061818 101.061818 0 0 1-15.429819-4.689455V703.069091H319.092364V553.797818a71.552 71.552 0 0 1-15.429819 5.073455l-3.467636 0.791272-1.931636 0.384-8.098909 1.163637-9.658182 0.395636a104.215273 104.215273 0 0 1-19.281455-1.943273v203.985455c0 16.802909 13.114182 30.475636 28.939637 30.475636h443.671272c15.825455 0 28.939636-13.684364 28.939637-30.487272zM290.059636 219.426909c-15.755636 0-28.834909 14.161455-28.834909 31.546182 0 16.989091 13.079273 31.150545 28.834909 31.150545h422.981819c15.767273 0 28.834909-14.161455 28.834909-31.150545 0-17.384727-13.067636-31.534545-28.834909-31.534546h-422.981819z" fill="#aa131c" p-id="1871"></path></svg></h5>
+        </div>
+    </a>
+    <div class=" btn dropup col-xs-4 " data-toggle="modal" data-target="#ditu">
+        <div class="col-xs-12" style="padding-bottom: 0;margin-bottom: 0;padding-top: 0;margin-top: 0;">
+            <div class="col-xs-1"></div>
+            <h5 class="col-xs-11" style="padding-bottom: 0;margin-bottom: 0;padding-top: 0;margin-top: 0;"><svg t="1576300948835" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2877" ><path d="M801.984 32.448L94.592 608.064a34.112 34.112 0 0 0 24.576 60.48l359.104-32 164.352 343.168a34.112 34.112 0 0 0 64.384-9.152l150.144-906.112a34.048 34.048 0 0 0-55.168-32z" fill="#aa131c" p-id="2878"></path></svg></h5>
+        </div>
+
+    </div>
+    <a  class="btn col-xs-4" data-toggle="modal" data-target="#myModal">
+        <div class="col-xs-12" style="padding-bottom: 0;margin-bottom: 0;padding-top: 0;margin-top: 0;">
+            <div class="col-xs-1"></div>
+            <h5 class="col-xs-11" style="padding-bottom: 0;margin-bottom: 0;padding-top: 0;margin-top: 0;">
+                <svg t="1576301171837" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6414"><path d="M824.70464 1020.096c-43.712 0-79.168-36.48-79.168-81.6 0-45.056 35.456-81.6 79.168-81.6s79.168 36.48 79.168 81.6c0 45.056-35.456 81.6-79.168 81.6z m-369.472 0c-43.712 0-79.168-36.48-79.168-81.6 0-45.056 35.456-81.6 79.168-81.6s79.168 36.48 79.168 81.6c0 45.056-35.456 81.6-79.168 81.6zM265.02464 164.736h694.08c18.944 0 36.928 8.64 49.088 23.68 12.16 14.976 17.216 34.816 13.76 54.016l-49.28 279.36a64.64 64.64 0 0 1-59.008 53.952l-555.52 34.688 10.24 49.088c2.56 12.032 12.8 20.544 24.64 20.544h510.72c25.536 0 46.208 21.312 46.208 47.616 0 26.24-20.672 47.616-46.208 47.616h-510.72c-55.36 0-103.232-39.872-114.88-95.68l-117.76-563.904a25.408 25.408 0 0 0-24.64-20.48H46.27264A46.912 46.912 0 0 1 0.00064 47.616C0.00064 21.376 20.67264 0 46.20864 0H135.68064c55.296 0 103.168 39.936 114.944 95.616l14.4 69.12z" p-id="6415" fill="#aa131c"></path></svg>
+            </h5>
+        </div>
+    </a>
+</nav>
+
+
+<div id="ditu" class="modal fade bs-example-modal-lg " tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">请确认你当前位置，系统将为你导航</h6>
+            </div>
+            <div class="modal-body " id="molbody">
+                <div id="container" class="map" tabindex="0"></div>
+            </div>
+            <div class="container">
+                <input type="hidden" id="jingweidu" maxlength="30">
+                <h6 id='address'></h6>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="address();" data-dismiss="modal">确认</button>
+            </div>
+            <br/>
+        </div>
+    </div>
+</div>
+
+
+
+
+</body>
+
+
+<script type="text/javascript" src='//webapi.amap.com/maps?v=1.4.15&key=e9257ffbfd99d8e066127354ee12bd9e&plugin=AMap.ToolBar'></script>
+<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+<script type="text/javascript">
+    AMapUI.loadUI(['misc/PositionPicker'], function (PositionPicker) {
+        var map = new AMap.Map('container', {
+            zoom: 16,
+            scrollWheel: false
+        });
+        map.plugin(['AMap.Geolocation', 'AMap.ToolBar'], function () {
+
+            var toolbar = new AMap.ToolBar();
+            map.addControl(toolbar);
+            var geolocation = new AMap.Geolocation({
+                enableHighAccuracy: true, // 是否使用高精度定位，默认:true
+                timeout: 5000, // 超过5秒后停止定位，默认：无穷大
+                maximumAge: 0, // 定位结果缓存0毫秒，默认：0
+                convert: true, // 自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+                showButton: true, // 显示定位按钮，默认：true
+                buttonPosition: 'LB', // 定位按钮停靠位置，默认：'LB'，左下角
+                buttonOffset: new AMap.Pixel(10, 20), // 定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+                showMarker: true, // 定位成功后在定位到的位置显示点标记，默认：true
+                showCircle: true, // 定位成功后用圆圈表示定位精度范围，默认：true
+                panToLocation: true, // 定位成功后将定位到的位置作为地图中心点，默认：true
+                zoomToAccuracy: true // 定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+            });
+            map.addControl(geolocation);
+            geolocation.getCurrentPosition();
+
+        });
+        var positionPicker = new PositionPicker({
+            mode: 'dragMap',
+            map: map
+        });
+        positionPicker.on('success', function (positionResult) {
+            document.getElementById("jingweidu").value = positionResult.position; ///动态经纬
+            document.getElementById('address').innerHTML = positionResult.address;
+            //          document.getElementById('nearestJunction').innerHTML = positionResult.nearestJunction;
+            //          document.getElementById('nearestRoad').innerHTML = positionResult.nearestRoad;
+            //          document.getElementById('nearestPOI').innerHTML = positionResult.nearestPOI;
+        });
+
+        positionPicker.on('fail', function (positionResult) {
+            console.log(positionResult);
+        });
+        positionPicker.start();
+        map.panBy(0, 1);
+
+        map.addControl(new AMap.ToolBar({
+            liteStyle: true
+        }))
+    });
+</script>
+<script type="text/javascript">
+    var y1 = window.screen.width;
+    var a = "px";
+    var y2 = y1 * 8 / 10;
+    document.getElementById("container").style.height = y2 + a;
+    address = function () {
+        var star = document.getElementById("jingweidu").value;
+        var end = document.getElementById("adid").value;
+        var thehref = 'https://m.amap.com/navi/?start=' + star + '&dest=' + end + '&destName=  &naviBy=car&key=e9257ffbfd99d8e066127354ee12bd9e';
+        window.open(thehref)
+    }
+</script>
+<script>
+    var swiper = new Swiper('.swiper-container', {
+    //分页
+    pagination: {
+        el: '.swiper-pagination',
+    },
+    //导航按钮
+    navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+    },
+    //自动轮播
+    autoplay: {
+        delay: 4000, //时间 毫秒
+        disableOnInteraction: false, //用户操作之后是否停止自动轮播默认true
+    },
+    loop: true, //循环 最后面一个往后面滑动会滑到第一个
+});
+
+
+    var danjia=$("#danjia").val();
+    var kucun=$("#kucun").val();
+
+    $("#num").html($("#add").val());
+    function add() {
+
+        var a = $("#add").val();
+        if (a >= kucun) { //达到库存最大值，不能再增加，等于最大值
+            $("#liang").html("亲，不能再添加了");
+        } else {
+            a++;
+            $("#add").val(a);
+            $("#sum").html(danjia*a);
+            $("#liang").html("");
+            $("#num").html($("#add").val());
+        }
+    }
+
+    function sub() {
+        var a = $("#add").val();
+        if (a <= 1) { //达到库存最大值，不能再增加，等于最大值
+            $("#liang").html("亲，不能再少了");
+        } else {
+            a--;
+            $("#add").val(a);
+            $("#sum").html(danjia * a);
+            $("#liang").html("");
+            $("#num").html($("#add").val());
+        }
+    }
+
+
+</script>
+<script  th:inline="javascript">
+
+
+    if ([[${address}]] != null) {
+        var ad = [[${address}]];
+        $("#name").val(ad.name);
+        $("#phone").val(ad.phone);
+        $("#addre").val(ad.address);
+    }
+
+
+
+    var phoneReg = /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/;
+
+function sendDD() {
+
+    var phone1 = $.trim($('#phone').val());
+
+
+    if ($("#name").val()=='') {
+        $("#liang").html("请输入用户名");
+        return false;
+    }
+    if (!phoneReg.test(phone1)) {
+        $("#liang").html("请输入有效的手机号码")
+        return false;
+    }
+    if ($("#addre").val()=='') {
+        $("#liang").html("请输入联系地址");
+        return false;
+    }
+
+
+    $.ajax({
+        type: "POST",
+        url: "/addDD",
+        data: {
+            "spid":[[${commodity.id}]],
+            "shopName":[[${commodity.shopName}]],
+            "spname":[[${commodity.spName}]],
+            "sppicture":[[${commodity.picture_sp1}]],
+            "danjia":$("#danjia").val(),
+            "amount":$("#add").val(),
+            "total":$("#sum").html(),
+            "name":$("#name").val(),
+            "phone":$("#phone").val(),
+            "address":$("#addre").val(),
+            "remark":$("#texxt").val(),
+        },
+
+        error: function () {
+            alert("链接服务器失败");
+        },
+        success: function (date) {
+            if (date == "addDDok") {
+                $("#liang").html("提交成功");
+
+            } else {
+                alert("身份认证已过期，请重新登录");
+                window.location.href = '/login';
+            }
+        }
+    })
+
+}
+
+
+
+    if ([[${sc}]] ) {
+        $("#sc").html("<svg t=\"1576313823221\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"2017\" ><path d=\"M707.584 93.184c-77.312 0-148.992 38.912-196.608 102.912-47.104-64-119.296-102.912-196.608-102.912-139.264 0-252.416 123.904-252.416 275.968 0 90.624 40.448 154.624 73.216 205.824C229.888 723.968 468.48 908.8 478.72 916.48c9.728 7.68 20.992 11.264 32.256 11.264s22.528-3.584 32.256-11.264c10.24-7.68 248.32-193.024 343.552-341.504 32.768-51.2 73.216-115.2 73.216-205.824 0-152.064-113.152-275.968-252.416-275.968z\" fill=\"#aa131c\" p-id=\"2018\"></path></svg>");
+        $("#sc1").val("1");
+
+    }else{
+        $("#sc1").val("0");
+        $("#sc").html("<svg t=\"1576312987817\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1842\"><path d=\"M734.53112889 35.48046222c-87.96387555 0-169.51978667 44.27320889-223.69621334 117.09098667-53.59388445-72.81777778-135.73233778-117.09098667-223.69621333-117.09098667-158.45148445 0-287.19331555 140.97521778-287.19331555 313.99025778 0 103.10997333 46.02083555 175.92775111 83.30353778 234.18197333C191.01923555 753.17248 462.48391111 963.47022222 474.13475555 972.20835555c11.06830222 8.73813333 23.88423111 12.81592889 36.70016 12.8159289s25.63185778-4.07779555 36.70016-12.8159289c11.65084445-8.73813333 282.53297778-219.61841778 390.88583112-388.55566222 37.28270222-58.25422222 83.30353778-131.072 83.30353778-234.18197333 0-173.01504-128.74183111-313.99025778-287.19331556-313.99025778zM864.43804445 581.90506667c-99.61472 139.81013333-310.49500445 299.42670222-320.98076445 306.99975111-9.90321778 7.57304889-21.55406222 11.65084445-32.62236445 11.65084444-11.65084445 0-22.71914667-3.49525333-32.62236444-11.65084444-10.48576-7.57304889-217.28824889-168.93724445-320.98076444-312.82517333-33.20490667-52.4288-86.21624889-117.67352889-86.21624889-209.7152 0-154.95623111 86.21624889-263.89162667 227.77400889-263.89162667 78.6432 0 164.27690667 75.14794667 212.04536888 140.39267555 48.35100445-65.24472889 133.40216889-140.39267555 212.0453689-140.39267555 142.14030222 0 234.18197333 108.93539555 234.18197333 263.89162667 0 92.04167111-58.83676445 163.69436445-92.62421333 215.54062222z\" fill=\"#aa131c\" p-id=\"1843\"></path></svg>")
+
+    }
+$("#sc").click(function () {
+
+    if ($("#sc1").val()=="0"){
+
+
+        $.ajax({
+            type: "POST",
+            url: "/joinsc",
+            data: {
+                "spid": [[${commodity.id}]],
+                "spname": [[${commodity.spName}]],
+                "jianjie":[[${commodity.miaosu}]],
+                "picture": [[${commodity.picture_sp1}]],
+                "jiage": $("#danjia").val(),
+            },
+
+            error: function () {
+                alert("链接服务器失败");
+            },
+            success: function (date) {
+                if (date == "ok") {
+                    $("#sc").html("<svg t=\"1576313823221\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"2017\" ><path d=\"M707.584 93.184c-77.312 0-148.992 38.912-196.608 102.912-47.104-64-119.296-102.912-196.608-102.912-139.264 0-252.416 123.904-252.416 275.968 0 90.624 40.448 154.624 73.216 205.824C229.888 723.968 468.48 908.8 478.72 916.48c9.728 7.68 20.992 11.264 32.256 11.264s22.528-3.584 32.256-11.264c10.24-7.68 248.32-193.024 343.552-341.504 32.768-51.2 73.216-115.2 73.216-205.824 0-152.064-113.152-275.968-252.416-275.968z\" fill=\"#aa131c\" p-id=\"2018\"></path></svg>");
+                    $("#sc1").val("1");
+                } else {
+                    alert("身份认证已过期，请重新登录");
+                    window.location.href = '/login2';
+                }
+            }
+        })
+
+
+
+
+
+    }
+    else{
+        $.ajax({
+            type: "POST",
+            url: "/deletesc",
+            data: {
+                "spid": [[${commodity.id}]],
+            },
+
+            error: function () {
+                alert("链接服务器失败");
+            },
+            success: function (date) {
+                if (date == "ok") {
+                    $("#sc1").val("0");
+                    $("#sc").html("<svg t=\"1576312987817\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1842\"><path d=\"M734.53112889 35.48046222c-87.96387555 0-169.51978667 44.27320889-223.69621334 117.09098667-53.59388445-72.81777778-135.73233778-117.09098667-223.69621333-117.09098667-158.45148445 0-287.19331555 140.97521778-287.19331555 313.99025778 0 103.10997333 46.02083555 175.92775111 83.30353778 234.18197333C191.01923555 753.17248 462.48391111 963.47022222 474.13475555 972.20835555c11.06830222 8.73813333 23.88423111 12.81592889 36.70016 12.8159289s25.63185778-4.07779555 36.70016-12.8159289c11.65084445-8.73813333 282.53297778-219.61841778 390.88583112-388.55566222 37.28270222-58.25422222 83.30353778-131.072 83.30353778-234.18197333 0-173.01504-128.74183111-313.99025778-287.19331556-313.99025778zM864.43804445 581.90506667c-99.61472 139.81013333-310.49500445 299.42670222-320.98076445 306.99975111-9.90321778 7.57304889-21.55406222 11.65084445-32.62236445 11.65084444-11.65084445 0-22.71914667-3.49525333-32.62236444-11.65084444-10.48576-7.57304889-217.28824889-168.93724445-320.98076444-312.82517333-33.20490667-52.4288-86.21624889-117.67352889-86.21624889-209.7152 0-154.95623111 86.21624889-263.89162667 227.77400889-263.89162667 78.6432 0 164.27690667 75.14794667 212.04536888 140.39267555 48.35100445-65.24472889 133.40216889-140.39267555 212.0453689-140.39267555 142.14030222 0 234.18197333 108.93539555 234.18197333 263.89162667 0 92.04167111-58.83676445 163.69436445-92.62421333 215.54062222z\" fill=\"#aa131c\" p-id=\"1843\"></path></svg>")
+
+                } else {
+                    alert("身份认证已过期，请重新登录");
+                    window.location.href = '/login2';
+                }
+            }
+        })
+
+    }
+
+
+
+
+
+
+})
+
+
+
+</script>
+</html>
